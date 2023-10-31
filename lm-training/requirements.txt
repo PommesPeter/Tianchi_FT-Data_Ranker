@@ -1,0 +1,10 @@
+pandas==2.0.0
+numpy
+datasets
+transformers>=4.33.1
+torch
+sentencepiece
+tokenizers>=0.13.3
+peft
+accelerate
+deepspeed

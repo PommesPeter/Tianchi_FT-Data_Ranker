@@ -1,0 +1,9 @@
+checkpoints
+data
+.vscode
+
+data-juicer/*.egg-info
+
+lm-evaluation-harness/*.egg-info
+lm-evaluation-harness/lm_cache
+lm-evaluation-harness/results
