@@ -1,7 +1,6 @@
 #!/bin/bash
 
-NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-MODEL_NAME=run_keep_long_token_perplexity_refine_v1_en05zh05_2023-10-31-15-39-37
+MODEL_NAME=run_keep_long_token_perplexity_refine_v6_en_2023-11-06-01-30-32
 
 # Check arg number
 if [[ $# -ne 4 ]]; then
@@ -23,6 +22,7 @@ fi
 
 # Prepare paths
 # model_path=$2
+# model_path=../checkpoints/${MODEL_NAME}
 model_path=../checkpoints/run/${MODEL_NAME}
 # model_path=../data/models/falcon-rw-1b
 # data_dir=$3/${mode}
@@ -42,9 +42,9 @@ task_fewshot=(
   challenge_mc_massive  5
   challenge_summ        0
   challenge_qmsumm      0
-  challenge_ma          0
-  challenge_mc_zh       25
 )
+  # challenge_ma          0
+  # challenge_mc_zh       25
 
 echo "[MODEL] ${model_path}"
 echo "[DATA] ${data_dir}"
@@ -58,7 +58,7 @@ for ((i=0; i<${#task_fewshot[@]};i+=2)); do
   python main.py \
     --model=hf-causal \
     --model_args=pretrained=${model_path},trust_remote_code=True \
-    --device=cuda:2 \
+    --device=cuda:0 \
     --tasks=${task} \
     --num_fewshot=${fewshot} \
     --batch_size=16 \

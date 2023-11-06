@@ -1,13 +1,14 @@
 #!/bin/bash
 
-export DATA_JUICER_CACHE_HOME=/home/xiejunlin/data3/data_juicer
-export https_proxy=http://100.110.144.39:7890
-export http_proxy=http://100.110.144.39:7890
-export all_proxy=socks5://100.110.144.39:7890
+export DATA_JUICER_CACHE_HOME=/home/xiejunlin/data1/data_juicer
+export https_proxy=http://uestc.sylin.host:7890
+export http_proxy=http://uestc.sylin.host:7890
+export all_proxy=socks5://uestc.sylin.host:7890
 
+CUDA_VISIBLE_DEVICES=0,1,2,7
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-EXP_NAME=keep_long_token_perplexity_refine_v2_html
-NAME=run_${EXP_NAME}_en05zh05_${NOWTIME}
+EXP_NAME=keep_long_token_perplexity_refine_v6
+NAME=run_${EXP_NAME}_en_${NOWTIME}
 # NAME=run_perplexity_try_en05zh05_2023-10-31-19-09-22
 OUTPUT_DIR=checkpoints/run/${NAME}
 OUTPUT_DATA_PATH=${OUTPUT_DIR}/data/training_dataset.jsonl
@@ -15,22 +16,22 @@ OUTPUT_DATA_PATH=${OUTPUT_DIR}/data/training_dataset.jsonl
 mkdir -p ${OUTPUT_DIR}
 cp ./$0 ${OUTPUT_DIR}
 
-EN_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/alpaca_cot/alpaca-cot-en-refine-perplexity-try.yaml
-ZH_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/alpaca_cot/alpaca-cot-zh-refine-perplexity-try.yaml
+EN_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/dj_comp/keep_long_token_perplexity_refine_v6-en_20231106.yaml
+# ZH_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/alpaca_cot/alpaca-cot-zh-refine-perplexity-try.yaml
 
 # process data
 echo "[Shell] Running data juicer to process data."
 dj-process --config ${EN_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/en/datasets_en.jsonl --dataset_path data/raw_data/raw_data_en.jsonl
-dj-process --config ${ZH_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl --dataset_path data/raw_data/raw_data_zh.jsonl
+# dj-process --config ${ZH_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl --dataset_path data/raw_data/raw_data_zh.jsonl
 
 # sample 3M tokens
 echo "[Shell] Running get_train_dataset_1b.py to sample data"
 python lm-training/get_train_dataset_1b.py \
     --token_nums 3000000 \
-    --ratio 0.5 \
+    --ratio 1.0 \
     --en_data_dir ${OUTPUT_DIR}/data/en/datasets_en.jsonl \
-    --zh_data_dir ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl \
     --output_files ${OUTPUT_DATA_PATH}
+    # --zh_data_dir ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl \
 
 # training model
 # set -e 
@@ -67,12 +68,13 @@ ds_config_file=lm-training/train_scripts/deepspeed_configs/ds_config_stage3.json
 # Train Parameter
 bs_per_gpu=1
 num_nodes=1
-nproc_per_node=`nvidia-smi | grep RTX | wc -l`
-master_port=50003
+nproc_per_node=4
+master_port=$(shuf -i 32221-65535 -n 1)
 
 echo "[Shell] Running lm-training"
 grad_acc=`expr 256 / ${bs_per_gpu} / ${num_nodes} / ${nproc_per_node}`
-deepspeed --num_gpus ${nproc_per_node} --num_nodes ${num_nodes} --master_port ${master_port} lm-training/train.py \
+# deepspeed --num_gpus ${nproc_per_node} --num_nodes ${num_nodes} --master_port ${master_port} lm-training/train.py \
+deepspeed --include localhost:${CUDA_VISIBLE_DEVICES} --master_port ${master_port} lm-training/train.py \
     --model_name_or_path ${model_path} \
     --tokenizer ${tokenizer} \
     --data_path ${data_path} \

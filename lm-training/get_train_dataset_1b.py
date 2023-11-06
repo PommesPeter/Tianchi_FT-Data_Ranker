@@ -11,17 +11,19 @@ def get_parser():
     parser.add_argument(
         "--en_data_dir",
         type=str,
-        default="../data/refine_data_en/dataset_20231026_v1.jsonl",
+        default="",
+        required=True,
     )
     parser.add_argument(
         "--zh_data_dir",
         type=str,
-        default="../data/refine_data_zh/dataset_20231026_v1.jsonl",
+        default="",
     )
     parser.add_argument(
         "--output_files",
         type=str,
-        default="../data/test_data/run_en05zh05_keep_long_text_1b_v2.jsonl",
+        default="",
+        required=True,
     )
     return parser
 

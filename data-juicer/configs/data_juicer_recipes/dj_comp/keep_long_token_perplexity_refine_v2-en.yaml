@@ -1,0 +1,53 @@
+# global parameters
+project_name: 'Data-Juicer-recipes-alpaca-cot-en'
+dataset_path: '../data/raw_data/raw_data_en.jsonl'  # path to your dataset directory or file
+export_path: ''
+ds_cache_dir: '~/data3/huggingface/datasets'
+
+np: 100  # number of subprocess to process your dataset
+open_tracer: true
+trace_num: 50
+
+# process schedule
+# a list of several process operators with their arguments
+process:
+  - document_deduplicator: # 104636705
+      lowercase: true 
+      ignore_non_character: true
+      
+  - alphanumeric_filter: # 104636381
+      tokenization: false
+      min_ratio: 0.1
+  - character_repetition_filter: # 104630030
+      rep_len: 10
+      max_ratio: 0.6  
+  - flagged_words_filter: # 104576967
+      lang: en
+      tokenization: true
+      max_ratio: 0.017  
+  - maximum_line_length_filter: # 104575811
+      min_len: 10
+  - text_length_filter: # 104573711
+      min_len: 50
+  - language_id_score_filter:                               # filter text in specific language with language scores larger than a specific max value
+      lang: en                                                # keep text in what language
+      min_score: 0.8
+  - special_characters_filter:                              # filter text with special-char ratio out of specific range
+      min_ratio: 0.0                                          # the min ratio of filter range
+      max_ratio: 0.35 
+  - token_num_filter:
+      hf_tokenizer: georgeyw/GPT2-tokenizer 
+      max_num: 3072
+  - perplexity_filter:                                      # filter text with perplexity score out of specific range
+      lang: en                                                # compute perplexity in what language
+      max_ppl: 1000
+
+  - whitespace_normalization_mapper:
+
+  - document_simhash_deduplicator:  # 72855345
+      tokenization: space
+      window_size: 4
+      lowercase: true
+      ignore_pattern: '\p{P}'
+      num_blocks: 9
+      hamming_distance: 4

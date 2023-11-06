@@ -1,8 +1,10 @@
 #!/bin/bash
 
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-MODEL_NAME=run_keep_long_text_en05zh05_${NOWTIME}
+# MODEL_NAME=run_keep_long_token_perplexity_refine_v2_html_en_${NOWTIME}
+MODEL_NAME=run_keep_long_token_perplexity_refine_v6_1_en_${NOWTIME}
 
+CUDA_DEVICES=0,1,6,7
 
 mkdir -p ../checkpoints/${MODEL_NAME}
 cp ./$0 ../checkpoints/${MODEL_NAME}
@@ -28,7 +30,7 @@ tokenizer=${model_path}
 # Data Path
 # e.g /home/data/train.jsonl
 # data_path=${2} # /path/to/your/dataset.jsonl
-data_path="../data/test_data/run_en05zh05_keep_long_text_1b_v2.jsonl" # /path/to/your/dataset.jsonl
+data_path="../checkpoints/run/run_keep_long_token_perplexity_refine_v6_en_2023-11-06-01-30-32/data/flitered_training_dataset.jsonl" # /path/to/your/dataset.jsonl
 
 # Output Path
 # e.g ${WORK_DIR}/checkpoints/baichuan2-7b/
@@ -45,11 +47,12 @@ ds_config_file=${WORK_DIR}/train_scripts/deepspeed_configs/ds_config_stage3.json
 # Train Parameter
 bs_per_gpu=1
 num_nodes=1
-nproc_per_node=`nvidia-smi | grep RTX | wc -l`
-master_port=50001
+nproc_per_node=4
+master_port=$(shuf -i 32221-65535 -n 1)
 
 grad_acc=`expr 256 / ${bs_per_gpu} / ${num_nodes} / ${nproc_per_node}`
-deepspeed --num_gpus ${nproc_per_node} --num_nodes ${num_nodes} --master_port ${master_port} train.py \
+# deepspeed --num_gpus ${nproc_per_node} --num_nodes ${num_nodes} --master_port ${master_port} train.py \
+deepspeed --include localhost:${CUDA_DEVICES} --master_port ${master_port} train.py \
     --model_name_or_path ${model_path} \
     --tokenizer ${tokenizer} \
     --data_path ${data_path} \
