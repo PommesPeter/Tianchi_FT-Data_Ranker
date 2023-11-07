@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODEL_NAME=run_keep_long_token_perplexity_refine_v6_en_2023-11-06-01-30-32
+MODEL_NAME=run_keep_long_token_perplexity_refine_v6_1_en_2023-11-06-21-01-41
 
 # Check arg number
 if [[ $# -ne 4 ]]; then
@@ -23,7 +23,7 @@ fi
 # Prepare paths
 # model_path=$2
 # model_path=../checkpoints/${MODEL_NAME}
-model_path=../checkpoints/run/${MODEL_NAME}
+model_path=../checkpoints/${MODEL_NAME}
 # model_path=../data/models/falcon-rw-1b
 # data_dir=$3/${mode}
 data_dir=../data/challenge-data/${mode}
@@ -58,7 +58,7 @@ for ((i=0; i<${#task_fewshot[@]};i+=2)); do
   python main.py \
     --model=hf-causal \
     --model_args=pretrained=${model_path},trust_remote_code=True \
-    --device=cuda:0 \
+    --device=cuda:1 \
     --tasks=${task} \
     --num_fewshot=${fewshot} \
     --batch_size=16 \

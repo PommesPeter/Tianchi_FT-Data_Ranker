@@ -184,3 +184,9 @@ process:
       top_ratio:                                              # ratio of selected top specified field value
       topk:                                                   # number of selected top specified field value
       reverse: True                                           # determine the sorting rule, if reverse=True, then sort in descending order
+  - text_len_selector:
+      field_keys: ''
+      min_range:
+      max_range:
+      interval:
+      num_sample:

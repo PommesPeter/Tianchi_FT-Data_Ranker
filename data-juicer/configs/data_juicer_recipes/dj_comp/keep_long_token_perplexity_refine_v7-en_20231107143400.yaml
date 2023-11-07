@@ -1,0 +1,57 @@
+# global parameters
+project_name: 'Data-Juicer-recipes-alpaca-cot-en'
+dataset_path: '../data/raw_data/raw_data_en.jsonl'  # path to your dataset directory or file
+export_path: ''
+ds_cache_dir: '~/data3/huggingface/datasets'
+
+np: 100  # number of subprocess to process your dataset
+open_tracer: true
+trace_num: 100
+
+# process schedule
+# a list of several process operators with their arguments
+process:
+
+  - document_deduplicator: # 104636705
+      lowercase: true 
+      ignore_non_character: true
+
+  - whitespace_normalization_mapper: # NOTE: diff
+  - clean_html_mapper:               # NOTE: diff
+
+  - alphanumeric_filter: # 104636381
+      tokenization: false
+      min_ratio: 0.1
+  - character_repetition_filter: # 104630030
+      rep_len: 10
+      max_ratio: 0.6  
+  - flagged_words_filter: # 104576967
+      lang: en
+      tokenization: true
+      max_ratio: 0.017  
+  - maximum_line_length_filter: # 104575811
+      min_len: 20
+  - text_length_filter: # 104573711
+      min_len: 30
+  - perplexity_filter:                                      # filter text with perplexity score out of specific range
+      lang: en                                                # compute perplexity in what language
+      max_ppl: 1000
+  - language_id_score_filter:                               # filter text in specific language with language scores larger than a specific max value
+      lang: en                                                # keep text in what language
+      min_score: 0.8
+
+  - document_simhash_deduplicator:  # 72855345
+      tokenization: space
+      window_size: 3
+      lowercase: true
+      ignore_pattern: '\p{P}'
+      num_blocks: 9
+      hamming_distance: 7
+
+  - text_len_selector:
+      text_key: "text"
+      field_keys: "__dj__stats__.text_len"
+      min_range: 0
+      max_range: 20000
+      interval: 1000
+      num_sample: 80000

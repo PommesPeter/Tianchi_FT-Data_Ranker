@@ -1,13 +1,14 @@
 #!/bin/bash
 
+export PYTHONPATH=/home/xiejunlin/workspace/Tianchi_FT-Data_Ranker/data-juicer/data_juicer
 export DATA_JUICER_CACHE_HOME=/home/xiejunlin/data1/data_juicer
 export https_proxy=http://uestc.sylin.host:7890
 export http_proxy=http://uestc.sylin.host:7890
 export all_proxy=socks5://uestc.sylin.host:7890
 
-CUDA_VISIBLE_DEVICES=0,1,2,7
+CUDA_VISIBLE_DEVICES=4,5,6,7
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-EXP_NAME=keep_long_token_perplexity_refine_v6
+EXP_NAME=keep_long_token_perplexity_textlen_selector
 NAME=run_${EXP_NAME}_en_${NOWTIME}
 # NAME=run_perplexity_try_en05zh05_2023-10-31-19-09-22
 OUTPUT_DIR=checkpoints/run/${NAME}
@@ -16,7 +17,7 @@ OUTPUT_DATA_PATH=${OUTPUT_DIR}/data/training_dataset.jsonl
 mkdir -p ${OUTPUT_DIR}
 cp ./$0 ${OUTPUT_DIR}
 
-EN_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/dj_comp/keep_long_token_perplexity_refine_v6-en_20231106.yaml
+EN_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/dj_comp/keep_long_token_perplexity_refine_v7-en_20231107143400.yaml
 # ZH_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/alpaca_cot/alpaca-cot-zh-refine-perplexity-try.yaml
 
 # process data
