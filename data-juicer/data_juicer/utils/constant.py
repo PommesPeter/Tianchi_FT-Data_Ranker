@@ -24,12 +24,14 @@ class StatsKeys(object):
     num_token = 'num_token'
     num_words = 'num_words'
     word_rep_ratio = 'word_rep_ratio'
+    language_model_score = 'language_model_score'
 
 
 class HashKeys(object):
     hash = DEFAULT_PREFIX + 'hash'
     minhash = DEFAULT_PREFIX + 'minhash'
     simhash = DEFAULT_PREFIX + 'simhash'
+
 
 class InterVars(object):
     lines = DEFAULT_PREFIX + 'lines'

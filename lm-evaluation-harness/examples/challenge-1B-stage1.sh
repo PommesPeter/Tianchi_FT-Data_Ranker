@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODEL_NAME=run_keep_long_token_perplexity_refine_v6_1_en_2023-11-06-21-01-41
+MODEL_NAME=run_keep_long_token_perplexity_textlen_selector_en_2023-11-07-15-20-02
 
 # Check arg number
 if [[ $# -ne 4 ]]; then
@@ -23,7 +23,7 @@ fi
 # Prepare paths
 # model_path=$2
 # model_path=../checkpoints/${MODEL_NAME}
-model_path=../checkpoints/${MODEL_NAME}
+model_path=../checkpoints/run/${MODEL_NAME}
 # model_path=../data/models/falcon-rw-1b
 # data_dir=$3/${mode}
 data_dir=../data/challenge-data/${mode}

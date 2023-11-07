@@ -1,0 +1,17 @@
+# global parameters
+project_name: 'Exp-Max-Line-Length'
+dataset_path: 'data/raw_data/raw_data_en.jsonl'  # path to your dataset directory or file
+export_path: ''
+ds_cache_dir: '~/data3/huggingface/datasets'
+
+np: 100  # number of subprocess to process your dataset
+open_tracer: true
+trace_num: 100
+
+# process schedule
+# a list of several process operators with their arguments
+process:
+  - flagged_words_filter: # 104576967
+      lang: en
+      tokenization: false
+      max_ratio: 0.017  
