@@ -6,12 +6,11 @@ export https_proxy=http://uestc.sylin.host:7890
 export http_proxy=http://uestc.sylin.host:7890
 export all_proxy=socks5://uestc.sylin.host:7890
 
-CUDA_VISIBLE_DEVICES=0,1,2,3
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-CFG_NAME=alpaca-cot-en-refine-perplexity-try
-EXP_NAME=run_perplexity_try_v2
-# NAME=run_${EXP_NAME}_en_${NOWTIME}
-NAME=run_perplexity_try_v2_en_2023-10-31-19-09-22
+CFG_NAME=keep_long_token_perplexity_refine_v8_1-en_20231108215300
+EXP_NAME=run_keep_long_token_perplexity_refine_v8_1
+NAME=run_${EXP_NAME}_en_${NOWTIME}
+# NAME=run_perplexity_try_v2_en_2023-10-31-19-09-22
 OUTPUT_DIR=checkpoints/run/${NAME}
 OUTPUT_DATA_PATH=${OUTPUT_DIR}/data/training_dataset.jsonl
 
