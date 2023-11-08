@@ -6,9 +6,10 @@ export https_proxy=http://uestc.sylin.host:7890
 export http_proxy=http://uestc.sylin.host:7890
 export all_proxy=socks5://uestc.sylin.host:7890
 
-CUDA_VISIBLE_DEVICES=4,5,6,7
+CUDA_VISIBLE_DEVICES=0,1,2,3
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-EXP_NAME=keep_keep_long_token_perplexity_refine_v6_2
+CFG_NAME=keep_long_token_perplexity_refine_v8-en_20231108160900
+EXP_NAME=run_keep_long_token_perplexity_refine_v8
 NAME=run_${EXP_NAME}_en_${NOWTIME}
 # NAME=run_perplexity_try_en05zh05_2023-10-31-19-09-22
 OUTPUT_DIR=checkpoints/run/${NAME}
@@ -17,7 +18,7 @@ OUTPUT_DATA_PATH=${OUTPUT_DIR}/data/training_dataset.jsonl
 mkdir -p ${OUTPUT_DIR}
 cp ./$0 ${OUTPUT_DIR}
 
-EN_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/dj_comp/keep_long_token_perplexity_refine_v6_2-en_20231107204900.yaml
+EN_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/dj_comp/${CFG_NAME}.yaml
 # ZH_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/alpaca_cot/alpaca-cot-zh-refine-perplexity-try.yaml
 
 # process data
@@ -98,3 +99,5 @@ deepspeed --include localhost:${CUDA_VISIBLE_DEVICES} --master_port ${master_por
     --logging_steps 1 \
     --tf32 True \
     --deepspeed ${ds_config_file} | tee ${output_path}/training_log.txt
+
+echo "[Shell] Done"

@@ -15,7 +15,8 @@ class TextLenBalancedSelector(Selector):
         min_range: int = 0,
         max_range: int = 20000,
         interval: int = 1000,
-        num_sample=80000,
+        num_sample: int = 80000,
+        seed: int = 123,
         *args,
         **kwargs
     ):
@@ -35,6 +36,7 @@ class TextLenBalancedSelector(Selector):
         self.max_range = max_range
         self.interval = interval
         self.num_sample = num_sample
+        self.seed = seed
 
         self.num_buckets = (self.max_range - self.min_range) // self.interval + 1
         self.bucket_nums = [
@@ -72,7 +74,7 @@ class TextLenBalancedSelector(Selector):
         for id_list in buckets:
             select_index.extend(id_list)
 
-        return dataset.select(select_index).shuffle(seed=123)
+        return dataset.select(select_index).shuffle(seed=self.seed)
 
 
 if __name__ == "__main__":

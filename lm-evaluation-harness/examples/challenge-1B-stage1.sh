@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODEL_NAME=run_keep_long_token_perplexity_textlen_selector_en_2023-11-07-15-20-02
+MODEL_NAME=run_run_perplexity_try_v2_en_2023-11-07-22-00-33
 
 # Check arg number
 if [[ $# -ne 4 ]]; then
@@ -58,7 +58,7 @@ for ((i=0; i<${#task_fewshot[@]};i+=2)); do
   python main.py \
     --model=hf-causal \
     --model_args=pretrained=${model_path},trust_remote_code=True \
-    --device=cuda:1 \
+    --device=cuda:3 \
     --tasks=${task} \
     --num_fewshot=${fewshot} \
     --batch_size=16 \

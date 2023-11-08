@@ -12,11 +12,13 @@ class TextLengthFilter(Filter):
     """Filter to keep samples with total text length within a specific
     range."""
 
-    def __init__(self,
-                 min_len: PositiveInt = 10,
-                 max_len: PositiveInt = sys.maxsize,
-                 *args,
-                 **kwargs):
+    def __init__(
+        self,
+        min_len: PositiveInt = 10,
+        max_len: PositiveInt = sys.maxsize,
+        *args,
+        **kwargs
+    ):
         """
         Initialization method.
 
@@ -42,8 +44,7 @@ class TextLengthFilter(Filter):
         return sample
 
     def process(self, sample):
-        if self.min_len <= sample[Fields.stats][
-                StatsKeys.text_len] <= self.max_len:
+        if self.min_len <= sample[Fields.stats][StatsKeys.text_len] <= self.max_len:
             return True
         else:
             return False

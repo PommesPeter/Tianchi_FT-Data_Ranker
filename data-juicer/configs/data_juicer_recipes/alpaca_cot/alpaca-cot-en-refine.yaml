@@ -2,7 +2,7 @@
 project_name: 'Data-Juicer-recipes-alpaca-cot-en'
 dataset_path: '../data/raw_data/raw_data_en.jsonl'  # path to your dataset directory or file
 export_path: '../data/refine_data/dataset.jsonl'
-ds_cache_dir: '~/data3/huggingface/datasets'
+ds_cache_dir: '~/data1/huggingface/datasets'
 
 np: 100  # number of subprocess to process your dataset
 open_tracer: true
