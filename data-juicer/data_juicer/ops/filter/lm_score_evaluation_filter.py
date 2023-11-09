@@ -17,7 +17,8 @@ class LanguageModelEvaluationFilter(Filter):
         lang: str = '',
         min_score: ClosedUnitInterval = 0.8,
         dimension: str = 'helpfulness',
-        model_name_or_path="gpt2",
+        model_name_or_path='internlm/internlm-chat-20b',
+        cuda_device: str = 'cuda:0',
         *args,
         **kwargs
     ):
@@ -38,33 +39,37 @@ class LanguageModelEvaluationFilter(Filter):
             "zh": "请检查模型是否加载成功。如果没有，请稍后重试。",
         }
 
-        from transformers import AutoModelForCausalLM
+        from transformers import AutoTokenizer, AutoModelForCausalLM
 
         logger.info("Loading language model from HuggingFace...")
-        self.lm_model = AutoModelForCausalLM.from_pretrained(model_name_or_path)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
+        self.lm_model = AutoModelForCausalLM.from_pretrained(model_name_or_path).cuda(cuda_device).eval()
+        
 
     def compute_stats(self, sample):
         # check if it's computed already
         if StatsKeys.language_model_score in sample[Fields.stats]:
             return sample
 
-        text = sample[self.text_key].lower().replace('\n', ' ')
+        text = sample['text'].lower().replace('\n', ' ')
+        _instruction = sample['instruction'].lower().replace('\n', ' ')
+        _input = sample['input'].lower().replace('\n', ' ')
+        _output = sample['output'].lower().replace('\n', ' ')
         # ft_model = get_model(self.model_key, lang=self.lang, model_type='fasttext')
         # TODO: using prompt and giving to the language model to predict text quality
         if self.lm_model is None:
             err_msg = 'Model not loaded. Please retry later.'
             logger.error(err_msg)
             raise ValueError(err_msg)
-        # pred = ft_model.predict(text)
-        # lang_id = pred[0][0].replace('__label__', '')
-        # lang_score = pred[1][0]
+        prompt = self.prompt[self.lang].format(_instruction, _input, _output)
+        pred = self.lm_model.chat(prompt, tokenizer=self.tokenizer)
         language_model_score = 0
 
-        sample[Fields.stats][StatsKeys.language_model_score] = language_model_score
+        sample[Fields.stats][StatsKeys.lm_eval_score] = language_model_score
 
         return sample
 
     def process(self, sample):
-        if sample[Fields.stats][StatsKeys.language_model_score] >= self.min_score:
+        if sample[Fields.stats][StatsKeys.lm_eval_score] >= self.min_score:
             return True
         return False
