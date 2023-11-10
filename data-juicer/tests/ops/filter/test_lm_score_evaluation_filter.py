@@ -24,25 +24,8 @@ class MaximumLineLengthFilterTest(unittest.TestCase):
 
     def test_case(self):
 
-        ds_list = [{
-            'text': 'a=1\nb\nc=1+2+3+5\nd=6'
-        }, {
-            'text':
-            "Today is Sund Sund Sund Sunda and it's a happy day!\nYou know"
-        }, {
-            'text': 'a v s e e f g a qkc'
-        }, {
-            'text': '，。、„”“«»１」「《》´∶：？！（）；–—．～’…━〈〉【】％►'
-        }, {
-            'text': 'Do you need a cup of coffee?'
-        }, {
-            'text': 'emoji表情测试下😊，😸31231\n'
-        }]
-        tgt_list = [{
-            'text': 'a v s e e f g a qkc'
-        }, {
-            'text': 'emoji表情测试下😊，😸31231\n'
-        }]
+        ds_list = [{"instruction":"where did all the money that was lost in the sub prime mortgage crisis and subsequent global recession actually go ? Money does n't simply disappear so if people lost money then it must have gone somewhere . Where ? Explain like I'm five.","input":"","output":"The subprime mortgage crisis was a financial crisis that occurred in the late 2000s as a result of the collapse of the housing market. Many people had taken out mortgages to buy homes, but when the housing market crashed, the value of their homes decreased and they were no longer able to make their mortgage payments. This led to a wave of foreclosures, which is when the bank takes back a home because the owner can't make the payments. As a result, many banks and financial institutions lost a lot of money because they had invested in these mortgages and were now unable to recoup their investments. This caused a financial crisis, as the banks and financial institutions that had lost money were no longer able to lend money to other people or businesses. The money that was lost during the financial crisis did not simply disappear. Instead, it was lost by the banks and financial institutions that had invested in the subprime mortgages and were unable to recoup their investments when the housing market crashed. This loss of money had a ripple effect, as the banks and financial institutions were then unable to lend money to other people or businesses, which slowed down the economy and led to a global recession.", "text": "where did all the money that was lost in the sub prime mortgage crisis and subsequent global recession actually go ? Money does n't simply disappear so if people lost money then it must have gone somewhere . Where ? Explain like I'm five. The subprime mortgage crisis was a financial crisis that occurred in the late 2000s as a result of the collapse of the housing market. Many people had taken out mortgages to buy homes, but when the housing market crashed, the value of their homes decreased and they were no longer able to make their mortgage payments. This led to a wave of foreclosures, which is when the bank takes back a home because the owner can't make the payments. As a result, many banks and financial institutions lost a lot of money because they had invested in these mortgages and were now unable to recoup their investments. This caused a financial crisis, as the banks and financial institutions that had lost money were no longer able to lend money to other people or businesses. The money that was lost during the financial crisis did not simply disappear. Instead, it was lost by the banks and financial institutions that had invested in the subprime mortgages and were unable to recoup their investments when the housing market crashed. This loss of money had a ripple effect, as the banks and financial institutions were then unable to lend money to other people or businesses, which slowed down the economy and led to a global recession."}]
+        tgt_list = [{"text": "where did all the money that was lost in the sub prime mortgage crisis and subsequent global recession actually go ? Money does n't simply disappear so if people lost money then it must have gone somewhere . Where ? Explain like I'm five. The subprime mortgage crisis was a financial crisis that occurred in the late 2000s as a result of the collapse of the housing market. Many people had taken out mortgages to buy homes, but when the housing market crashed, the value of their homes decreased and they were no longer able to make their mortgage payments. This led to a wave of foreclosures, which is when the bank takes back a home because the owner can't make the payments. As a result, many banks and financial institutions lost a lot of money because they had invested in these mortgages and were now unable to recoup their investments. This caused a financial crisis, as the banks and financial institutions that had lost money were no longer able to lend money to other people or businesses. The money that was lost during the financial crisis did not simply disappear. Instead, it was lost by the banks and financial institutions that had invested in the subprime mortgages and were unable to recoup their investments when the housing market crashed. This loss of money had a ripple effect, as the banks and financial institutions were then unable to lend money to other people or businesses, which slowed down the economy and led to a global recession."}]
         dataset = Dataset.from_list(ds_list)
         op = LanguageModelEvaluationFilter(lang='en', min_score=4, cuda_device="cuda:1")
         self._run_lm_score_evaluation_filter(dataset, tgt_list, op)

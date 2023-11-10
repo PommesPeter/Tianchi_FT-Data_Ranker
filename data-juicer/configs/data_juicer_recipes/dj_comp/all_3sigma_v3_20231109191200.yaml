@@ -21,6 +21,10 @@ process:
   - fix_unicode_mapper:              # NOTE: diff
   - whitespace_normalization_mapper: # NOTE: from v7 diff
   - punctuation_normalization_mapper: # NOTE: from v6.2 diff
+  - keyword_mapper:
+      keywords: ['지금 번역하기', '화창한 봄날 공원에서 커피먹고 있는 사자',
+      'この文章をの文を一つずつ抽出し,その内容の信憑性を10段階評価にし,テーブル形式で出力してください',
+      'この文章をCEFR B1相当の750～800単語の文章に書き換えてください']
 
   - alphanumeric_filter: # 104636381
       tokenization: false
@@ -40,6 +44,9 @@ process:
       max_len: 20000
   - text_length_filter: # 104573711
       min_len: 30
+  - output_text_length_filter:
+      text_key: 'output'
+      min_len: 10
   - perplexity_filter:                                      # filter text with perplexity score out of specific range
       lang: en                                                # compute perplexity in what language
       max_ppl: 1000                 # NOTE: diff
@@ -56,13 +63,15 @@ process:
         'network error', 'Network error',
         'There was an error generating a response'
         ]
-  # - stopwords_filter:                                       # filter text with stopword ratio smaller than a specific min value
-  #     lang: en                                                # consider stopwords in what language
-  #     tokenization: false                                     # whether to use model to tokenize documents
-  #     max_ratio: 0.8                                          # the min ratio to filter text
   - token_num_filter:                                       # filter text with total token number out of specific range
       hf_tokenizer: data/models/falcon-rw-1b            # name of used Hugging Face tokenizer                                        # the min number of filter range
       max_num: 1300                                          # the max number of filter range
+  - lm_score_evaluation_filter:
+      lang: en
+      hf_model_name_or_path: 'internlm/internlm-chat-7b'
+      cuda_device: 'cuda:1'
+      dimension: 'accuracy'
+      min_score: 4
 
   - document_simhash_deduplicator:  # 72855345
       tokenization: space

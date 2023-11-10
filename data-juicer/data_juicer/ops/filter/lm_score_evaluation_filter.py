@@ -1,3 +1,5 @@
+import re
+
 from jsonargparse.typing import ClosedUnitInterval
 from loguru import logger
 
@@ -19,7 +21,7 @@ class LanguageModelEvaluationFilter(Filter):
         lang: str = 'en',
         min_score: ClosedUnitInterval = 0.8,
         dimension: str = 'accuracy',
-        model_name_or_path='internlm/internlm-chat-7b',
+        hf_model_name_or_path='internlm/internlm-chat-7b',
         cuda_device: str = 'cuda:0',
         *args,
         **kwargs
@@ -34,6 +36,7 @@ class LanguageModelEvaluationFilter(Filter):
         :param kwargs: extra args
         """
         super().__init__(*args, **kwargs)
+        self.lang = lang
         self.min_score = min_score
         self.dimension = dimension
         self.prompt = {
@@ -42,14 +45,17 @@ class LanguageModelEvaluationFilter(Filter):
         }
 
         logger.info("Loading language model from HuggingFace...")
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, trust_remote_code=True)
-        self.lm_model = AutoModelForCausalLM.from_pretrained(model_name_or_path, trust_remote_code=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            hf_model_name_or_path, trust_remote_code=True
+        )
+        self.lm_model = AutoModelForCausalLM.from_pretrained(
+            hf_model_name_or_path, trust_remote_code=True
+        )
         self.lm_model = self.lm_model.cuda(cuda_device).eval()
-        
 
     def compute_stats(self, sample):
         # check if it's computed already
-        if StatsKeys.language_model_score in sample[Fields.stats]:
+        if StatsKeys.lm_eval_score in sample[Fields.stats]:
             return sample
 
         text = sample['text'].lower().replace('\n', ' ')
@@ -62,8 +68,9 @@ class LanguageModelEvaluationFilter(Filter):
             logger.error(err_msg)
             raise ValueError(err_msg)
         prompt = self.prompt[self.lang].format(_instruction, _input, _output)
-        response, history = self.lm_model.chat(prompt, tokenizer=self.tokenizer)
-        language_model_score = int(response)
+        response, history = self.lm_model.chat(self.tokenizer, prompt)
+        score = re.findall(r"\d+\.?\d*", response)
+        language_model_score = int(score[0])
 
         sample[Fields.stats][StatsKeys.lm_eval_score] = language_model_score
 

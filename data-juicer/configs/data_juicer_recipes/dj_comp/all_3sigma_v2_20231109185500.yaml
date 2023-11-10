@@ -21,6 +21,8 @@ process:
   - fix_unicode_mapper:              # NOTE: diff
   - whitespace_normalization_mapper: # NOTE: from v7 diff
   - punctuation_normalization_mapper: # NOTE: from v6.2 diff
+  - keyword_mapper:
+      keywords: ['지금 번역하기']
 
   - alphanumeric_filter: # 104636381
       tokenization: false
@@ -40,6 +42,9 @@ process:
       max_len: 20000
   - text_length_filter: # 104573711
       min_len: 30
+  - output_text_length_filter:
+      text_key: 'output'
+      min_len: 10
   - perplexity_filter:                                      # filter text with perplexity score out of specific range
       lang: en                                                # compute perplexity in what language
       max_ppl: 1000                 # NOTE: diff
@@ -47,6 +52,7 @@ process:
       lang: en                                                # keep text in what language
       min_score: 0.8                # NOTE: from v6.2 diff
   - words_num_filter:                                       # filter text with number of words out of specific range
+      text_key: 'instruction'
       lang: en                                                # sample in which language
       tokenization: false                                     # whether to use model to tokenize documents
       min_num: 5                                             # the min number of filter range
