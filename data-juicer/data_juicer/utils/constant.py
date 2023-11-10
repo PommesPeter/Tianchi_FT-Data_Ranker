@@ -24,7 +24,7 @@ class StatsKeys(object):
     num_token = 'num_token'
     num_words = 'num_words'
     word_rep_ratio = 'word_rep_ratio'
-    language_model_score = 'language_model_score'
+    lm_eval_score = 'lm_eval_score'
 
 
 class HashKeys(object):

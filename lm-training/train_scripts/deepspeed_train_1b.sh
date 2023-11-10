@@ -2,12 +2,12 @@
 
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
 # MODEL_NAME=run_keep_long_token_perplexity_refine_v2_html_en_${NOWTIME}
-MODEL_NAME=run_keep_long_token_perplexity_refine_v6_1_en_${NOWTIME}
+MODEL_NAME=run_run_keep_long_token_perplexity_refine_v8_1_en_2023-11-08-21-58-28
 
-CUDA_DEVICES=0,1,6,7
+CUDA_DEVICES=0,1,2,3
 
-mkdir -p ../checkpoints/${MODEL_NAME}
-cp ./$0 ../checkpoints/${MODEL_NAME}
+mkdir -p ../checkpoints/run/${MODEL_NAME}
+cp ./$0 ../checkpoints/run/${MODEL_NAME}
 
 set -e 
 export CUDA_DEVICE_MAX_CONNECTIONS=1
@@ -30,11 +30,11 @@ tokenizer=${model_path}
 # Data Path
 # e.g /home/data/train.jsonl
 # data_path=${2} # /path/to/your/dataset.jsonl
-data_path="../checkpoints/run/run_keep_long_token_perplexity_refine_v6_en_2023-11-06-01-30-32/data/flitered_training_dataset.jsonl" # /path/to/your/dataset.jsonl
+data_path=../checkpoints/run/${MODEL_NAME}/data/training_dataset.jsonl # /path/to/your/dataset.jsonl
 
 # Output Path
 # e.g ${WORK_DIR}/checkpoints/baichuan2-7b/
-output_path=../checkpoints/${MODEL_NAME} #/path/to/your/output/
+output_path=../checkpoints/run/${MODEL_NAME} #/path/to/your/output/
 
 mkdir -p ${output_path}/
 
