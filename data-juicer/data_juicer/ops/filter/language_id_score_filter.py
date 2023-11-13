@@ -1,3 +1,4 @@
+import re
 from jsonargparse.typing import ClosedUnitInterval
 from loguru import logger
 
@@ -36,8 +37,12 @@ class LanguageIDScoreFilter(Filter):
         if StatsKeys.lang in sample[
                 Fields.stats] and StatsKeys.lang_score in sample[Fields.stats]:
             return sample
-
+        
         text = sample[self.text_key].lower().replace('\n', ' ')
+        patterns = [(r"([A-Za-z])\s+\'([A-Za-z])",r"\1'\2"), (r"([A-Za-z])\s+n't",r"\1n't")]
+        for pattern, replacement in patterns:  
+            text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
+
         ft_model = get_model(self.model_key, lang=self.lang, model_type='fasttext')
         if ft_model is None:
             err_msg = 'Model not loaded. Please retry later.'

@@ -6,7 +6,7 @@ from data_juicer.utils.model_utils import get_model, prepare_model
 from ..base_op import OPERATORS, Filter
 
 
-@OPERATORS.register_module('specified_field_language_id_score_filter')
+@OPERATORS.register_module('specified_field_lang_id_score_filter')
 class SpecifiedFieldLanguageIDScoreFilter(Filter):
     """Filter to keep samples in a specific language with confidence score
     larger than a specific min value."""

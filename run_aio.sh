@@ -8,8 +8,8 @@ export all_proxy=socks5://uestc.sylin.host:7890
 
 CUDA_VISIBLE_DEVICES=4,5,6,7
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-CFG_NAME=all_3sigma_20231108205200
-EXP_NAME=run_all_3sigma
+CFG_NAME=all_3sigma_v5_20231112020100
+EXP_NAME=run_all_3sigma_v5
 NAME=${EXP_NAME}_en_${NOWTIME}
 # NAME=run_run_keep_long_token_perplexity_refine_v8_en_2023-11-08-17-10-07
 OUTPUT_DIR=checkpoints/run/${NAME}

@@ -1,5 +1,5 @@
 from . import (clean_copyright_mapper, clean_email_mapper, clean_html_mapper,
-               clean_ip_mapper, clean_links_mapper, chinese_convert_mapper,
+               clean_ip_mapper, clean_links_mapper,
                expand_macro_mapper, fix_unicode_mapper, keyword_mapper, 
                nlpaug_en_mapper, nlpcda_zh_mapper, punctuation_normalization_mapper,
                remove_bibliography_mapper, remove_comments_mapper,
@@ -10,7 +10,7 @@ from . import (clean_copyright_mapper, clean_email_mapper, clean_html_mapper,
 
 __all__ = [
     'clean_copyright_mapper', 'clean_email_mapper', 'clean_html_mapper',
-    'clean_ip_mapper', 'clean_links_mapper', 'chinese_convert_mapper', 
+    'clean_ip_mapper', 'clean_links_mapper', 
     'expand_macro_mapper', 'fix_unicode_mapper', 'keyword_mapper', 'nlpaug_en_mapper',
     'nlpcda_zh_mapper', 'punctuation_normalization_mapper',
     'remove_bibliography_mapper', 'remove_comments_mapper',

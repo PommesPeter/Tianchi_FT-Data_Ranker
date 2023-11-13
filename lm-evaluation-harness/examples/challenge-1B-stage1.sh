@@ -1,7 +1,7 @@
 #!/bin/bash
 
-MODEL_NAME=run_run_keep_long_token_perplexity_refine_v8_1_en_2023-11-08-21-58-28
-CUDA=1
+MODEL_NAME=run_all_3sigma_v5_en_2023-11-12-02-03-50
+CUDA=0
 
 # Check arg number
 if [[ $# -ne 4 ]]; then

@@ -3,8 +3,8 @@ from . import (alphanumeric_filter, average_line_length_filter,
                language_id_score_filter, maximum_line_length_filter,
                output_text_length_filter, perplexity_filter,
                special_characters_filter, specified_field_filter,
-               specified_numeric_field_filter,
-               speicified_field_lang_id_score_filter, stopwords_filter,
+               specified_numeric_field_filter, lm_score_evaluation_filter,
+               specified_field_lang_id_score_filter, stopwords_filter,
                suffix_filter, text_length_filter, token_num_filter,
                word_num_filter, word_repetition_filter)
 
@@ -16,5 +16,5 @@ __all__ = [
     'specified_numeric_field_filter', 'stopwords_filter', 'suffix_filter',
     'text_length_filter', 'token_num_filter', 'word_num_filter',
     'word_repetition_filter', 'error_filter', 'output_text_length_filter',
-    'speicified_field_lang_id_score_filter'
+    'specified_field_lang_id_score_filter', 'lm_score_evaluation_filter',
 ]

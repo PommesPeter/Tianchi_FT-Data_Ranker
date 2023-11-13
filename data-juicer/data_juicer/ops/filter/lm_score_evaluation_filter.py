@@ -45,6 +45,8 @@ class LanguageModelEvaluationFilter(Filter):
         }
 
         logger.info("Loading language model from HuggingFace...")
+        from multiprocess import set_start_method
+        set_start_method("spawn")
         self.tokenizer = AutoTokenizer.from_pretrained(
             hf_model_name_or_path, trust_remote_code=True
         )
@@ -58,7 +60,6 @@ class LanguageModelEvaluationFilter(Filter):
         if StatsKeys.lm_eval_score in sample[Fields.stats]:
             return sample
 
-        text = sample['text'].lower().replace('\n', ' ')
         _instruction = sample['instruction'].lower().replace('\n', ' ')
         _input = sample['input'].lower().replace('\n', ' ')
         _output = sample['output'].lower().replace('\n', ' ')

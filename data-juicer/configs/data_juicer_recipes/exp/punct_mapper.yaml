@@ -1,0 +1,14 @@
+# global parameters
+project_name: 'Exp-Punction-Mapper'
+dataset_path: '../checkpoints/run/run_all_3sigma_v4_en_2023-11-11-17-37-38/data/en/datasets_en.jsonl'  # path to your dataset directory or file
+export_path: ''
+ds_cache_dir: '~/data1/huggingface/datasets'
+
+np: 100  # number of subprocess to process your dataset
+open_tracer: true
+trace_num: 100
+
+# process schedule
+# a list of several process operators with their arguments
+process:
+  - punctuation_normalization_mapper: # NOTE: from v6.2 diff

@@ -1,16 +1,16 @@
 #!/bin/bash
 
-export PYTHONPATH=/home/xiejunlin/workspace/Tianchi_FT-Data_Ranker/data-juicer/data_juicer
+export PYTHONPATH=/home/xiejunlin/workspace/Tianchi_FT-Data_Ranker/data-juicer
 export DATA_JUICER_CACHE_HOME=/home/xiejunlin/data1/data_juicer
 export https_proxy=http://uestc.sylin.host:7890
 export http_proxy=http://uestc.sylin.host:7890
 export all_proxy=socks5://uestc.sylin.host:7890
 
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-CFG_NAME=keep_long_token_perplexity_refine_v8_1-en_20231108215300
-EXP_NAME=run_keep_long_token_perplexity_refine_v8_1
+CFG_NAME=all_3sigma_v4_20231111171400
+EXP_NAME=all_3sigma_v4
 NAME=run_${EXP_NAME}_en_${NOWTIME}
-# NAME=run_perplexity_try_v2_en_2023-10-31-19-09-22
+# NAME=run_all_3sigma_v3_en_2023-11-10-21-04-25
 OUTPUT_DIR=checkpoints/run/${NAME}
 OUTPUT_DATA_PATH=${OUTPUT_DIR}/data/training_dataset.jsonl
 
