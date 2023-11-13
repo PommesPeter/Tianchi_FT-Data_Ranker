@@ -2,7 +2,7 @@
 
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
 # MODEL_NAME=run_keep_long_token_perplexity_refine_v2_html_en_${NOWTIME}
-MODEL_NAME=run_run_keep_long_token_perplexity_refine_v8_1_en_2023-11-08-21-58-28
+MODEL_NAME=run_all_3sigma_v4_en_2023-11-11-17-37-38
 
 CUDA_DEVICES=0,1,2,3
 
