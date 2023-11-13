@@ -45,7 +45,6 @@ class RemoveSpecificLanguagesMapper(Mapper):
             return sample
 
         sub_texts = re.findall(self.pattern, sample[self.text_key])
-        print(sub_texts)
         for text in sub_texts:
             sample[self.text_key] = sample[self.text_key].replace(text, '')
         return sample
