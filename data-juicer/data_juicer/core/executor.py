@@ -113,7 +113,6 @@ class Executor:
             prev = dataset  # record last dataset
             try:
                 if isinstance(op, Mapper):
-                    print("sss", "==" * 20)
                     tmp = dataset.map(function=op.process,
                                       num_proc=self.cfg.np,
                                       desc=op_name + '_process')
