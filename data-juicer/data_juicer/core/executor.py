@@ -185,6 +185,8 @@ class Executor:
             end = time()
             logger.info(f'Op [{op_name}] Done in {"%.3f" % (end - start)}(s). '
                         f'Left {len(dataset)} samples.')
+            if not op_name.endswith("_mapper"):
+                logger.info(f'Op [{op_name}] filtered {len(prev) - len(dataset)} samples.')
             start = end
         tend = time()
         logger.info(f'All Ops are done in {"%.3f" % (tend - tstart)}(s).')
