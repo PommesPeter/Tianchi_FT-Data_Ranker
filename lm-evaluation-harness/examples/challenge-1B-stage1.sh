@@ -1,7 +1,7 @@
 #!/bin/bash
 
-MODEL_NAME=run_all_3sigma_v5_en_2023-11-12-02-03-50
-CUDA=0
+MODEL_NAME=run_all_sigma_v4_llm_sample_gt_4_2023-11-14-21-34-52
+CUDA=2
 
 # Check arg number
 if [[ $# -ne 4 ]]; then
