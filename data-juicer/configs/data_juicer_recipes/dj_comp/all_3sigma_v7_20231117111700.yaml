@@ -4,7 +4,7 @@ dataset_path: '../data/raw_data/raw_data_en.jsonl'  # path to your dataset direc
 export_path: ''
 ds_cache_dir: '~/data1/huggingface/datasets'
 
-np: 100  # number of subprocess to process your dataset
+np: 50  # number of subprocess to process your dataset
 open_tracer: true
 trace_num: 100
 
@@ -57,15 +57,17 @@ process:
       max_ppl: 1000
   - language_id_score_filter:                               # filter text in specific language with language scores larger than a specific max value
       lang: en                                                # keep text in what language
-      min_score: 0.8
-#   - specified_field_lang_id_score_filter:
-#       lang: en
-#       text_key: 'instruction'
-#       min_score: 0.8
+      min_score: 0.7
   - words_num_filter:                                       # filter text with number of words out of specific range
       lang: en                                                # sample in which language
       tokenization: false                                     # whether to use model to tokenize documents
       min_num: 300                                             # the min number of filter range
+  - specified_field_words_num_filter:
+      text_key: 'instruction'
+      min_num: 3
+  - specified_field_words_num_filter:
+      text_key: 'output'
+      min_num: 5
   - error_filter:
       errors: [
         'network error', 'Network error',

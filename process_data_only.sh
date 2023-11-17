@@ -7,8 +7,8 @@ export http_proxy=http://uestc.sylin.host:7890
 export all_proxy=socks5://uestc.sylin.host:7890
 
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-CFG_NAME=all_3sigma_v4_20231111171400
-EXP_NAME=all_3sigma_v4
+CFG_NAME=all_3sigma_v7_20231117111700
+EXP_NAME=all_3sigma_v7_from_v4_data
 NAME=run_${EXP_NAME}_en_${NOWTIME}
 # NAME=run_all_3sigma_v3_en_2023-11-10-21-04-25
 OUTPUT_DIR=checkpoints/run/${NAME}
@@ -22,7 +22,7 @@ EN_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/dj_comp/${CFG_NAME}.yaml
 
 # process data
 echo "[Shell] Running data juicer to process data."
-dj-process --config ${EN_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/en/datasets_en.jsonl --dataset_path data/raw_data/raw_data_en.jsonl
+dj-process --config ${EN_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/en/datasets_en.jsonl --dataset_path checkpoints/run/run_all_3sigma_v4_en_2023-11-11-17-37-38/data/en/datasets_en.jsonl
 # dj-process --config ${ZH_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl --dataset_path data/raw_data/raw_data_zh.jsonl
 
 # sample 3M tokens
