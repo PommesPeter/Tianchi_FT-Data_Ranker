@@ -1,5 +1,4 @@
-from typing import List, Union
-
+import argostranslate.translate
 import regex as re
 
 from ..base_op import OPERATORS, Mapper
@@ -9,12 +8,7 @@ from ..base_op import OPERATORS, Mapper
 class RemoveSpecificLanguagesMapper(Mapper):
     """Mapper to clean specific chars in text samples."""
 
-    def __init__(self,
-                 langs_to_remove: Union[str, List[str]] = [
-                     'Japanese', 'Korean', 'Chinese'
-                 ],
-                 *args,
-                 **kwargs):
+    def __init__(self, langs_to_remove: str = 'Japanese', *args, **kwargs):
         """
         Initialization method.
 
@@ -26,16 +20,20 @@ class RemoveSpecificLanguagesMapper(Mapper):
 
         super().__init__(*args, **kwargs)
         if langs_to_remove:
-            unicode_to_remove = []
-            for lang in langs_to_remove:
-                if lang == 'Chinese':
-                    unicode_to_remove.append('\u4e00-\u9fa5')
-                elif lang == 'Korean':
-                    unicode_to_remove.append('\uac00-\ud7ff')
-                elif lang == 'Japanese':
-                    unicode_to_remove.append('\u30a0-\u30ff\u3040-\u309f')
+            if langs_to_remove == 'Chinese':
+                self.from_code = 'zh'
+                self.to_code = 'en'
+                unicode_to_remove = '\u4e00-\u9fa5'
+            elif langs_to_remove == 'Korean':
+                self.from_code = 'ko'
+                self.to_code = 'en'
+                unicode_to_remove = '\uac00-\ud7ff'
+            elif langs_to_remove == 'Japanese':
+                self.from_code = 'ja'
+                self.to_code = 'en'
+                unicode_to_remove = '\u30a0-\u30ff\u3040-\u309f'
 
-            self.pattern = u'[' + '|'.join(unicode_to_remove) + ']+'
+            self.pattern = u'[' + unicode_to_remove + ']+'
         else:
             self.pattern = None
 
@@ -44,7 +42,17 @@ class RemoveSpecificLanguagesMapper(Mapper):
         if self.pattern is None:
             return sample
 
-        sub_texts = re.findall(self.pattern, sample[self.text_key])
-        for text in sub_texts:
-            sample[self.text_key] = sample[self.text_key].replace(text, '')
+        matches = re.finditer(self.pattern, sample[self.text_key])
+        idxs = []
+        for match in matches:
+            start = match.start()
+            end = match.end()
+            idxs.append((start, end))
+        if len(idxs):
+            sub_text = sample[self.text_key][idxs[0][0]:idxs[-1][-1]]
+            translate_text = argostranslate.translate.translate(
+                sub_text, self.from_code, self.to_code)
+            sample[self.text_key] = sample[self.text_key].replace(
+                sub_text, translate_text)
+
         return sample
