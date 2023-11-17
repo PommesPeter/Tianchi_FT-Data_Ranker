@@ -18,32 +18,34 @@ class SpecifiedFieldWordNumFilterTest(unittest.TestCase):
                                          column=[{}] * dataset.num_rows)
         dataset = dataset.map(op.compute_stats)
         dataset = dataset.filter(op.process)
-        dataset = dataset.select_columns(column_names=['text'])
+        dataset = dataset.select_columns(column_names=['output'])
         res_list = dataset.to_list()
         self.assertEqual(res_list, target_list)
 
     def test_case(self):
 
         ds_list = [{
-            'text': 'Today is Sun'
+            'output': 'Today is Sun'
         }, {
-            'text':
+            'output':
             "Today is Sund Sund Sund Sund Sund Sunda and it's a happy day!"
         }, {
-            'text': 'a v s e c s f e f g a a a  '
+            'output': 'a v s e c s f e f g a a a  '
         }, {
-            'text': '，。、„”“«»１」「《》´∶：？！（）；–—．～’…━〈〉【】％►'
+            'output': '，。、„”“«»１」「《》´∶：？！（）；–—．～’…━〈〉【】％►'
         }, {
-            'text': '...'
+            'output': '...'
         }]
         tgt_list = [{
-            'text':
+            'output':
             "Today is Sund Sund Sund Sund Sund Sunda and it's a happy day!"
         }, {
-            'text': 'a v s e c s f e f g a a a  '
+            'output': 'a v s e c s f e f g a a a  '
         }]
         dataset = Dataset.from_list(ds_list)
-        op = SpecifiedFieldWordNumFilter(min_num=5, max_num=15)
+        op = SpecifiedFieldWordNumFilter(min_num=5,
+                                         max_num=15,
+                                         text_key='output')
         self._run_word_num_filter(dataset, tgt_list, op)
 
 
