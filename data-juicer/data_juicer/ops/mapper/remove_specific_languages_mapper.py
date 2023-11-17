@@ -53,6 +53,6 @@ class RemoveSpecificLanguagesMapper(Mapper):
             translate_text = argostranslate.translate.translate(
                 sub_text, self.from_code, self.to_code)
             sample[self.text_key] = sample[self.text_key].replace(
-                sub_text, translate_text)
+                sub_text, ' ' + translate_text)
 
         return sample

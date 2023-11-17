@@ -8,7 +8,7 @@ export all_proxy=socks5://uestc.sylin.host:7890
 
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
 CFG_NAME=all_3sigma_v7_20231117111700
-EXP_NAME=all_3sigma_v7_from_v4_data
+EXP_NAME=all_3sigma_v7_from_v4_data_fixed
 NAME=run_${EXP_NAME}_en_${NOWTIME}
 # NAME=run_all_3sigma_v3_en_2023-11-10-21-04-25
 OUTPUT_DIR=checkpoints/run/${NAME}

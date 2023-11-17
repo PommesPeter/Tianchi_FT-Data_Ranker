@@ -17,8 +17,8 @@ process:
       ignore_non_character: true
 
   # for text
-  - clean_links_mapper:
-      text_key: 'text'
+#   - clean_links_mapper:
+#       text_key: 'text'
   - fix_unicode_mapper:
       text_key: 'text'
   - keyword_mapper:
@@ -36,8 +36,8 @@ process:
       text_key: 'text'
 
   # for instruction
-  - clean_links_mapper:
-      text_key: 'instruction'
+#   - clean_links_mapper:
+#       text_key: 'instruction'
   - fix_unicode_mapper:
       text_key: 'instruction'
   - keyword_mapper:
@@ -55,8 +55,8 @@ process:
       text_key: 'instruction'
 
   # for output
-  - clean_links_mapper:
-      text_key: 'output'
+#   - clean_links_mapper:
+#       text_key: 'output'
   - fix_unicode_mapper:
       text_key: 'output'
   - keyword_mapper:

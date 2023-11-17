@@ -8,10 +8,10 @@ export all_proxy=socks5://100.110.144.39:7890
 export HF_DATASETS_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1
 
-CUDA_VISIBLE_DEVICES=0,1,6,7
+CUDA_VISIBLE_DEVICES=0,1,2,3
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
 CFG_NAME=all_3sigma_v7_20231117111700
-EXP_NAME=run_all_3sigma_v7
+EXP_NAME=all_3sigma_v7_from_v4_data_original
 NAME=${EXP_NAME}_en_${NOWTIME}
 # NAME=run_all_sigma_v4_llm_sample_gt_4_2023-11-14-21-34-52
 OUTPUT_DIR=checkpoints/run/${NAME}
