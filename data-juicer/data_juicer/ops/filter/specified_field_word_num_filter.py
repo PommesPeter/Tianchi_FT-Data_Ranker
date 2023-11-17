@@ -2,6 +2,8 @@ import sys
 
 from jsonargparse.typing import PositiveInt
 
+from data_juicer.utils.constant import Fields
+
 from ..base_op import OPERATORS, Filter
 from ..op_fusion import INTER_WORDS
 
@@ -36,11 +38,16 @@ class SpecifiedFieldWordNumFilter(Filter):
         self.max_num = max_num
 
     def compute_stats(self, sample):
-        pass
+        # check if it's computed already
+        if self.text_key + '_num_words' in sample[Fields.stats]:
+            return sample
+        words = sample[self.text_key].split(' ')
+        sample[Fields.stats][self.text_key + '_num_words'] = len(words)
+        return sample
 
     def process(self, sample):
-        words = sample[self.text_key].split(' ')
-        if self.min_num <= len(words) <= self.max_num:
+        if self.min_num <= sample[Fields.stats][self.text_key +
+                                                '_num_words'] <= self.max_num:
             return True
         else:
             return False
