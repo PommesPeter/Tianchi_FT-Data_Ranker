@@ -31,12 +31,6 @@ class CleanHtmlMapper(Mapper):
             raw_html = raw_html.replace('<br>', '\n')
             raw_html = raw_html.replace('<p>', '')
             raw_html = raw_html.replace('<\/p>', '')
-            raw_html = raw_html.replace('&lt;', '<')
-            raw_html = raw_html.replace('&gt;', '>')
-            raw_html = raw_html.replace('&amp;', '&')
-            raw_html = raw_html.replace('&nbsp;', ' ')
-            raw_html = raw_html.replace('<strong>', '')
-            raw_html = raw_html.replace('<strong/>', '')
             
             parser = HTMLParser(raw_html)
             return parser.text()

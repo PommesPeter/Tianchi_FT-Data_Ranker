@@ -8,10 +8,10 @@ export all_proxy=socks5://uestc.sylin.host:7890
 export HF_DATASETS_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1
 
-CUDA_VISIBLE_DEVICES=2,3,4,5
+CUDA_VISIBLE_DEVICES=0,1,6,7
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-CFG_NAME=all_3sigma_v9_20231118145600
-EXP_NAME=run_all_3sigma_v9_from_v4
+CFG_NAME=all_3sigma_v10_20231120133400
+EXP_NAME=run_all_3sigma_v10_from_v4
 NAME=${EXP_NAME}_en_${NOWTIME}
 # NAME=run_all_sigma_v4_llm_sample_gt_4_2023-11-14-21-34-52
 OUTPUT_DIR=checkpoints/run/${NAME}
@@ -25,7 +25,7 @@ EN_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/dj_comp/${CFG_NAME}.yaml
 
 # process data
 echo "[Shell] Running data juicer to process data."
-dj-process --config ${EN_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/en/datasets_en.jsonl --dataset_path data/raw_data/raw_data_en.jsonl
+dj-process --config ${EN_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/en/datasets_en.jsonl --dataset_path checkpoints/run/run_all_3sigma_v4_en_2023-11-11-17-37-38/data/en/datasets_en.jsonl
 # dj-process --config ${ZH_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl --dataset_path data/raw_data/raw_data_zh.jsonl
 
 # sample 3M tokens
@@ -102,4 +102,5 @@ deepspeed --include localhost:${CUDA_VISIBLE_DEVICES} --master_port ${master_por
     --tf32 True \
     --deepspeed ${ds_config_file} | tee ${output_path}/training_log.txt
 
+bash lm-evaluation-harness/examples/challenge-1B-stage1.sh ${NAME}
 echo "[Shell] Done"

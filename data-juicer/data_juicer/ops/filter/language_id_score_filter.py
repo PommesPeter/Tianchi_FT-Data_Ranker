@@ -39,7 +39,7 @@ class LanguageIDScoreFilter(Filter):
             return sample
         
         text = sample[self.text_key].lower().replace('\n', ' ')
-        patterns = [(r"([A-Za-z])\s+\'([A-Za-z])",r"\1'\2"), (r"([A-Za-z])\s+n't",r"\1n't")]
+        patterns = [(r"([A-Za-z])\s+\'([A-Za-z])",r"\1'\2"), (r"([A-Za-z])\s+n't",r"\1n't"), (r"([A-Za-z])\s+([!?.])",r"\1\2")]
         for pattern, replacement in patterns:  
             text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
 
