@@ -16,58 +16,58 @@ process:
       lowercase: true 
       ignore_non_character: true
 
-  # for text
-#   - clean_links_mapper:
-#       text_key: 'text'
+#   for text
+  - clean_links_mapper:
+      text_key: 'text'
   - fix_unicode_mapper:
       text_key: 'text'
   - keyword_mapper:
       text_key: 'text'
       keywords: ['지금 번역하기']
-#   - remove_specific_languages_mapper:
-#       text_key: 'text'
-#       langs_to_remove: 'Japanese'
-#   - remove_specific_languages_mapper:
-#       text_key: 'text'
-#       langs_to_remove: 'Korean'
+  - remove_specific_languages_mapper:
+      text_key: 'text'
+      langs_to_remove: 'Japanese'
+  - remove_specific_languages_mapper:
+      text_key: 'text'
+      langs_to_remove: 'Korean'
   - punctuation_normalization_mapper:
       text_key: 'text'
   - whitespace_normalization_mapper:
       text_key: 'text'
 
-  # for instruction
-#   - clean_links_mapper:
-#       text_key: 'instruction'
+#   for instruction
+  - clean_links_mapper:
+      text_key: 'instruction'
   - fix_unicode_mapper:
       text_key: 'instruction'
   - keyword_mapper:
       text_key: 'instruction'
       keywords: ['지금 번역하기']
-#   - remove_specific_languages_mapper:
-#       text_key: 'instruction'
-#       langs_to_remove: 'Japanese'
-#   - remove_specific_languages_mapper:
-#       text_key: 'instruction'
-#       langs_to_remove: 'Korean'
+  - remove_specific_languages_mapper:
+      text_key: 'instruction'
+      langs_to_remove: 'Japanese'
+  - remove_specific_languages_mapper:
+      text_key: 'instruction'
+      langs_to_remove: 'Korean'
   - punctuation_normalization_mapper:
       text_key: 'instruction'
   - whitespace_normalization_mapper:
       text_key: 'instruction'
 
-  # for output
-#   - clean_links_mapper:
-#       text_key: 'output'
+#   for output
+  - clean_links_mapper:
+      text_key: 'output'
   - fix_unicode_mapper:
       text_key: 'output'
   - keyword_mapper:
       text_key: 'output'
       keywords: ['지금 번역하기']
-#   - remove_specific_languages_mapper:
-#       text_key: 'output'
-#       langs_to_remove: 'Japanese'
-#   - remove_specific_languages_mapper:
-#       text_key: 'output'
-#       langs_to_remove: 'Korean'
+  - remove_specific_languages_mapper:
+      text_key: 'output'
+      langs_to_remove: 'Japanese'
+  - remove_specific_languages_mapper:
+      text_key: 'output'
+      langs_to_remove: 'Korean'
   - punctuation_normalization_mapper:
       text_key: 'output'
   - whitespace_normalization_mapper:
@@ -75,7 +75,7 @@ process:
 
   - alphanumeric_filter: # 104636381
       tokenization: false
-      min_ratio: 0.4             # change from 0.1
+      min_ratio: 0.3             # change from 0.1
   - average_line_length_filter:          # filter text with the average length of lines out of specific range.
       min_len: 10                        # the min length of filter range
       max_len: 10000  
@@ -111,7 +111,7 @@ process:
       max_ppl: 1000
   - language_id_score_filter:                               # filter text in specific language with language scores larger than a specific max value
       lang: en                                                # keep text in what language
-      min_score: 0.8
+      min_score: 0.7
   - words_num_filter:                                       # filter text with number of words out of specific range
       lang: en                                                # sample in which language
       tokenization: false                                     # whether to use model to tokenize documents
@@ -143,7 +143,7 @@ process:
   - text_len_selector:
       text_key: "text"
       field_keys: "__dj__stats__.text_len"
-      min_range: 2000
+      min_range: 0
       max_range: 20000
       interval: 1000
       num_sample: 80000

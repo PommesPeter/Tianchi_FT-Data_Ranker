@@ -2,16 +2,16 @@
 
 export PYTHONPATH=/home/xiejunlin/workspace/Tianchi_FT-Data_Ranker/data-juicer/data_juicer
 export DATA_JUICER_CACHE_HOME=/home/xiejunlin/data1/data_juicer
-export https_proxy=http://100.110.144.39:7890
-export http_proxy=http://100.110.144.39:7890
-export all_proxy=socks5://100.110.144.39:7890
+export https_proxy=http://uestc.sylin.host:7890
+export http_proxy=http://uestc.sylin.host:7890
+export all_proxy=socks5://uestc.sylin.host:7890
 export HF_DATASETS_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1
 
-CUDA_VISIBLE_DEVICES=0,1,2,3
+CUDA_VISIBLE_DEVICES=2,3,4,5
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-CFG_NAME=all_3sigma_v7_20231117111700
-EXP_NAME=all_3sigma_v7_from_v4_data_original
+CFG_NAME=all_3sigma_v9_20231118145600
+EXP_NAME=run_all_3sigma_v9_from_v4
 NAME=${EXP_NAME}_en_${NOWTIME}
 # NAME=run_all_sigma_v4_llm_sample_gt_4_2023-11-14-21-34-52
 OUTPUT_DIR=checkpoints/run/${NAME}
