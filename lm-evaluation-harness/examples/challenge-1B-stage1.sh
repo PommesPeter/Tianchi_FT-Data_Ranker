@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# MODEL_NAME=run_all_3sigma_v9_from_v4_en_2023-11-18-15-00-49
-MODEL_NAME=$1
-CUDA=0
+MODEL_NAME=run_all_3sigma_v10_1_from_v4_en_2023-11-20-21-25-29
+# MODEL_NAME=$1
+CUDA=1
 
 # Check arg number
 if [[ $# -ne 4 ]]; then
@@ -25,10 +25,10 @@ fi
 # Prepare paths
 # model_path=$2
 # model_path=../checkpoints/${MODEL_NAME}
-model_path=checkpoints/run/${MODEL_NAME}
+model_path=../checkpoints/run/${MODEL_NAME}
 # model_path=../data/models/falcon-rw-1b
 # data_dir=$3/${mode}
-data_dir=data/challenge-data/${mode}
+data_dir=../data/challenge-data/${mode}
 output_dir=results/${MODEL_NAME}/${mode}
 mkdir -p ${output_dir}
 
