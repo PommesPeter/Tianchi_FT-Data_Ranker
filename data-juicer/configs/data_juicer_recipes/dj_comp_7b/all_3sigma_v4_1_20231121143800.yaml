@@ -39,7 +39,7 @@ process:
       rep_len: 10
       max_ratio: 0.6
   - flagged_words_filter: # 104576967
-      lang: zh
+      lang: en
       tokenization: false
       max_ratio: 0.015              # change from 0.01
   - maximum_line_length_filter: # 104575811
@@ -51,19 +51,19 @@ process:
       text_key: 'output'
       min_len: 10
   - perplexity_filter:                                      # filter text with perplexity score out of specific range
-      lang: zh                                                # compute perplexity in what language
+      lang: en                                                # compute perplexity in what language
       max_ppl: 1000                 # NOTE: diff
   - language_id_score_filter:                               # filter text in specific language with language scores larger than a specific max value
-      lang: zh                                                # keep text in what language
+      lang: en                                                # keep text in what language
       min_score: 0.8                # NOTE: from v6.2 diff
 #   - specified_field_lang_id_score_filter:
-#       lang: zh
+#       lang: en
 #       text_key: 'instruction'
 #       min_score: 0.8
   - words_num_filter:                                       # filter text with number of words out of specific range
-      lang: zh                                                # sample in which language
+      lang: en                                                # sample in which language
       tokenization: false                                     # whether to use model to tokenize documents
-      min_num: 50                                             # the min number of filter range
+      min_num: 300                                             # the min number of filter range
   - error_filter:           # NOTE: diff
       errors: [
         'network error', 'Network error',

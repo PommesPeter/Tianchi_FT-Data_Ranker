@@ -1,19 +1,19 @@
 #!/bin/bash
 
-export PYTHONPATH=/home/xiejunlin/workspace/Tianchi_FT-Data_Ranker/data-juicer/data_juicer
+export PYTHONPATH=data-juicer/data_juicer
 export DATA_JUICER_CACHE_HOME=/home/xiejunlin/data/data_juicer
 export https_proxy=http://uestc.sylin.host:7890
 export http_proxy=http://uestc.sylin.host:7890
 export all_proxy=socks5://uestc.sylin.host:7890
 export HF_DATASETS_OFFLINE=1
-# export TRANSFORMERS_OFFLINE=1
+export TRANSFORMERS_OFFLINE=1
 
 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
 CFG_NAME=all_3sigma_v4_20231111171400
 EXP_NAME=run_best_v4_for_7b
 NAME=${EXP_NAME}_en_${NOWTIME}
-# NAME=run_all_sigma_v4_llm_sample_gt_4_2023-11-14-21-34-52
+# NAME=run_best_v4_for_7b_en_2023-11-20-12-57-27
 OUTPUT_DIR=checkpoints/run/${NAME}
 OUTPUT_DATA_PATH=${OUTPUT_DIR}/data/training_dataset.jsonl
 
@@ -25,17 +25,17 @@ ZH_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/dj_comp/${CFG_NAME}_zh.ya
 
 # process data
 echo "[Shell] Running data juicer to process data."
-# dj-process --config ${EN_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/en/datasets_en.jsonl --dataset_path data/raw_data/raw_data_en.jsonl
-# dj-process --config ${ZH_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl --dataset_path data/raw_data/raw_data_zh.jsonl
+dj-process --config ${EN_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/en/datasets_en.jsonl --dataset_path data/raw_data/raw_data_en.jsonl
+dj-process --config ${ZH_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl --dataset_path data/raw_data/raw_data_zh.jsonl
 
 # sample 3M tokens
 echo "[Shell] Running get_train_dataset_7b.py to sample data"
 python lm-training/get_train_dataset_7b.py \
     --token_nums 10000000 \
-    --ratio 1.0 \
+    --ratio 0.5 \
     --en_data_dir ${OUTPUT_DIR}/data/en/datasets_en.jsonl \
+    --zh_data_dir ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl \
     --output_files ${OUTPUT_DATA_PATH}
-    # --zh_data_dir ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl \
 
 # training model
 # set -e 
@@ -48,7 +48,7 @@ fi
 # Model Path
 # e.g /home/model/baichuan2-7b/
 # model_path=${1} #/path/to/your/model/
-model_path="data/models/falcon-rw-1b" #/path/to/your/model/
+model_path="data/models/Baichuan2-7B-Base" #/path/to/your/model/
 tokenizer=${model_path}
 
 # Data Path
@@ -106,7 +106,8 @@ deepspeed --include localhost:${CUDA_VISIBLE_DEVICES} --master_port ${master_por
     --deepspeed ${ds_config_file} | tee ${output_path}/training_log.txt
 
 # Convert lora to huggingface model
-python convert_to_hf.py \
+echo "[Shell] Convert lora to huggingface model"
+python lm-training/convert_to_hf.py \
      --model_name_or_path ${model_path} \
      --lora_path ${lora_path}   \
      --output_dir ${output_path} 

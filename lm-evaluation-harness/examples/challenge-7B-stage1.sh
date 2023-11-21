@@ -1,5 +1,8 @@
 #!/bin/bash
 
+MODEL_NAME=run_best_v4_for_7b_en_2023-11-20-12-57-27
+CUDA=1
+
 # Check arg number
 if [[ $# -ne 4 ]]; then
     echo "Four arguments required!" >&2
@@ -18,9 +21,13 @@ if [[ $ret -ne 0 ]]; then
 fi
 
 # Prepare paths
-model_path=$2
-data_dir=$3/${mode}
-output_dir=$4/${mode}
+# model_path=$2
+# model_path=../checkpoints/${MODEL_NAME}
+model_path=../checkpoints/run/${MODEL_NAME}
+# model_path=../data/models/falcon-rw-1b
+# data_dir=$3/${mode}
+data_dir=../data/challenge-data/${mode}
+output_dir=results/${MODEL_NAME}/${mode}
 mkdir -p ${output_dir}
 
 # Enable offline mode to speed up loading
@@ -47,8 +54,8 @@ for ((i=0; i<${#task_fewshot[@]};i+=2)); do
 
   python main.py \
     --model=hf-causal \
-    --model_args=pretrained=${model_path},trust_remote_code=True \
-    --device=cuda:0 \
+    --model_args=pretrained=${model_path},trust_remote_code=True,dtype=bfloat16 \
+    --device=cuda:${CUDA} \
     --tasks=${task} \
     --num_fewshot=${fewshot} \
     --batch_size=2 \
