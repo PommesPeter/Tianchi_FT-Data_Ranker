@@ -8,10 +8,10 @@ export all_proxy=socks5://uestc.sylin.host:7890
 export HF_DATASETS_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1
 
-CUDA_VISIBLE_DEVICES=2,3,6,7
+CUDA_VISIBLE_DEVICES=4,5,6,7
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-CFG_NAME=all_3sigma_v11_2023112118300
-EXP_NAME=run_all_3sigma_v11
+CFG_NAME=all_3sigma_v4_20231111171400
+EXP_NAME=run_all_3sigma_v4_1_without_textlen_selector
 NAME=${EXP_NAME}_en_${NOWTIME}
 # NAME=run_all_sigma_v4_llm_sample_gt_4_2023-11-14-21-34-52
 OUTPUT_DIR=checkpoints/run/${NAME}

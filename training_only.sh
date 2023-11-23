@@ -10,8 +10,8 @@ export TRANSFORMERS_OFFLINE=1
 
 CUDA_VISIBLE_DEVICES=4,5,6,7
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-DATA_PATH=data/cherry_data/data_v4_pre_cluster30.jsonl
-EXP_NAME=run_cherry_data_with_pre_experienced_model_cluster30
+DATA_PATH=data/cherry_data/tianchi_cherry_cluster100_maxlen1024_15000.jsonl
+EXP_NAME=run_cherry_data_cluster100_maxlen1024_15000
 NAME=${EXP_NAME}_en_${NOWTIME}
 # NAME=run_all_sigma_v4_llm_sample_gt_4_2023-11-14-21-34-52
 OUTPUT_DIR=checkpoints/run/${NAME}
@@ -84,5 +84,5 @@ deepspeed --include localhost:${CUDA_VISIBLE_DEVICES} --master_port ${master_por
     --tf32 True \
     --deepspeed ${ds_config_file} | tee ${output_path}/training_log.txt
 
-# bash lm-evaluation-harness/examples/challenge-1B-stage1.sh ${NAME}
+
 echo "[Shell] Done"

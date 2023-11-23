@@ -1,11 +1,11 @@
 #!/bin/bash
 
-MODEL_NAME=run_all_3sigma_v10_1_from_v4_en_2023-11-20-21-25-29
-# MODEL_NAME=$1
-CUDA=1
+# MODEL_NAME=run_all_3sigma_v10_1_from_v4_en_2023-11-20-21-25-29
+MODEL_NAME=$2
+CUDA=$3
 
 # Check arg number
-if [[ $# -ne 4 ]]; then
+if [[ $# -ne 3 ]]; then
     echo "Four arguments required!" >&2
     exit 2
 fi
