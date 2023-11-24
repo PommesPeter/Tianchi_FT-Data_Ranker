@@ -8,16 +8,27 @@ export all_proxy=socks5://uestc.sylin.host:7890
 export HF_DATASETS_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1
 
-CUDA_VISIBLE_DEVICES=4,5,6,7
+CUDA_VISIBLE_DEVICES=0,1,2,3
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-DATA_PATH=data/cherry_data/tianchi_cherry_cluster100_maxlen1024_15000.jsonl
-EXP_NAME=run_cherry_data_cluster100_maxlen1024_15000
+DATA_PATH=data/unieval/unieval_from_v4_gt_0.7.jsonl
+EXP_NAME=run_unieval_dialog_gt_0.7
 NAME=${EXP_NAME}_en_${NOWTIME}
 # NAME=run_all_sigma_v4_llm_sample_gt_4_2023-11-14-21-34-52
 OUTPUT_DIR=checkpoints/run/${NAME}
+OUTPUT_DATA_PATH=checkpoints/run/${NAME}/data/training_dataset.jsonl
 
 mkdir -p ${OUTPUT_DIR}
 cp ./$0 ${OUTPUT_DIR}
+
+echo "[Shell] Running get_train_dataset_1b.py to sample data"
+python lm-training/get_train_dataset_1b.py \
+    --token_nums 3000000 \
+    --ratio 1.0 \
+    --en_data_dir ${DATA_PATH} \
+    --output_files ${OUTPUT_DATA_PATH}
+    # --zh_data_dir ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl \
+
+cp ${DATA_PATH} ${OUTPUT_DIR}/data
 
 # training model
 # set -e 
@@ -37,7 +48,7 @@ tokenizer=${model_path}
 # e.g /home/data/train.jsonl
 # data_path=${2} # /path/to/your/dataset.jsonl
 # data_path="data/test_data/test_en065zh035_1b.jsonl" # /path/to/your/dataset.jsonl
-data_path=${DATA_PATH} # /path/to/your/dataset.jsonl
+data_path=${OUTPUT_DATA_PATH} # /path/to/your/dataset.jsonl
 
 # Output Path
 # e.g ${WORK_DIR}/checkpoints/baichuan2-7b/

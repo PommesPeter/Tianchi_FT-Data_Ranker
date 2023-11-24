@@ -10,8 +10,8 @@ export TRANSFORMERS_OFFLINE=1
 
 CUDA_VISIBLE_DEVICES=4,5,6,7
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-CFG_NAME=all_3sigma_v4_20231111171400
-EXP_NAME=run_all_3sigma_v4_1_without_textlen_selector
+CFG_NAME=all_sigma_v13_1_20231124145800
+EXP_NAME=run_all_sigma_v13_1
 NAME=${EXP_NAME}_en_${NOWTIME}
 # NAME=run_all_sigma_v4_llm_sample_gt_4_2023-11-14-21-34-52
 OUTPUT_DIR=checkpoints/run/${NAME}
@@ -25,7 +25,7 @@ EN_CONFIG_PATH=data-juicer/configs/data_juicer_recipes/dj_comp/${CFG_NAME}.yaml
 
 # process data
 echo "[Shell] Running data juicer to process data."
-dj-process --config ${EN_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/en/datasets_en.jsonl --dataset_path checkpoints/run/run_all_3sigma_v4_en_2023-11-11-17-37-38/data/en/datasets_en.jsonl
+dj-process --config ${EN_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/en/datasets_en.jsonl --dataset_path data/raw_data/raw_data_en.jsonl
 # dj-process --config ${ZH_CONFIG_PATH} --export_path ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl --dataset_path data/raw_data/raw_data_zh.jsonl
 
 # sample 3M tokens

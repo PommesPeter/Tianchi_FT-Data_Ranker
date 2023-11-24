@@ -1,0 +1,154 @@
+# global parameters
+project_name: 'Data-Juicer-recipes-alpaca-cot-en'
+dataset_path: '../data/raw_data/raw_data_en.jsonl'  # path to your dataset directory or file
+export_path: ''
+ds_cache_dir: '~/data1/huggingface/datasets'
+
+np: 100  # number of subprocess to process your dataset
+open_tracer: true
+trace_num: 100
+
+# process schedule
+# a list of several process operators with their arguments
+process:
+
+  - document_deduplicator: # 104636705
+      lowercase: true 
+      ignore_non_character: true
+
+  - error_filter:
+      text_key: 'text'
+      errors: [
+        '<p>', '<\/p>', '.jpg', '<a href', '<A HREF', '&lt;',
+        '&gt;', '&amp;', '&nbsp;', '<strong>', '<br>', '<li>'
+      ]
+  - error_filter:
+      text_key: 'instruction'
+      errors: [
+        'Keep going', 'Continue writing please', 
+        'expand on step', 'Next one please',
+        'More', 'Continue', 'continue.'
+      ]
+  - error_filter:
+      text_key: 'output'
+      errors: [
+        'network error', 'Network error',
+        'There was an error generating a response'
+        ]
+  - words_num_filter:
+      lang: en
+      tokenization: false
+      min_num: 300
+
+  # for text mapper
+  - keyword_mapper:
+      text_key: 'text'
+      keywords: ['지금 번역하기']
+  - remove_specific_languages_mapper:
+      text_key: 'text'
+      langs_to_remove: 'Japanese'
+  - remove_specific_languages_mapper:
+      text_key: 'text'
+      langs_to_remove: 'Korean'
+  - fix_unicode_mapper:
+      text_key: 'text'
+  - punctuation_normalization_mapper:
+      text_key: 'text'
+  - whitespace_normalization_mapper:
+      text_key: 'text'
+  - chinese_convert_mapper:
+      text_key: 'text'
+      mode: t2s
+
+  # for instruction mapper
+  - keyword_mapper:
+      text_key: 'instruction'
+      keywords: ['지금 번역하기']
+  - remove_specific_languages_mapper:
+      text_key: 'instruction'
+      langs_to_remove: 'Japanese'
+  - remove_specific_languages_mapper:
+      text_key: 'instruction'
+      langs_to_remove: 'Korean'
+  - fix_unicode_mapper:
+      text_key: 'instruction'
+  - punctuation_normalization_mapper:
+      text_key: 'instruction'
+  - whitespace_normalization_mapper:
+      text_key: 'instruction'
+  - chinese_convert_mapper:
+      text_key: 'instruction'
+      mode: t2s
+
+  # for output mapper
+  - keyword_mapper:
+      text_key: 'output'
+      keywords: ['지금 번역하기']
+  - remove_specific_languages_mapper:
+      text_key: 'output'
+      langs_to_remove: 'Japanese'
+  - remove_specific_languages_mapper:
+      text_key: 'output'
+      langs_to_remove: 'Korean'
+  - fix_unicode_mapper:
+      text_key: 'output'
+  - punctuation_normalization_mapper:
+      text_key: 'output'
+  - whitespace_normalization_mapper:
+      text_key: 'output'
+  - chinese_convert_mapper:
+      text_key: 'output'
+      mode: t2s
+
+  # filter
+  - alphanumeric_filter:
+      tokenization: false
+      min_ratio: 0.4
+  - average_line_length_filter:
+      min_len: 10
+      max_len: 10000
+  - character_repetition_filter:
+      rep_len: 10
+      max_ratio: 0.6
+  - flagged_words_filter:
+      lang: en
+      tokenization: false
+      max_ratio: 0.015
+  - maximum_line_length_filter:
+      min_len: 20
+      max_len: 20000
+  - text_length_filter:
+      min_len: 30
+  - output_text_length_filter:
+      text_key: 'output'
+      min_len: 10
+  - perplexity_filter:
+      lang: en
+      max_ppl: 1000
+  - language_id_score_filter:
+      lang: en
+      min_score: 0.8
+  - word_repetition_filter:
+      lang: en
+      tokenization: false
+      rep_len: 10
+      min_ratio: 0.0
+      max_ratio: 0.9
+  - token_num_filter:                                       
+      hf_tokenizer: data/models/falcon-rw-1b
+      max_num: 1024
+  - document_simhash_deduplicator:
+      tokenization: space
+      window_size: 3
+      lowercase: true
+      ignore_pattern: '\p{P}'
+      num_blocks: 9
+      hamming_distance: 7
+
+  - text_len_selector:          # NOTE: from v7 diff
+      text_key: "text"
+      field_keys: "__dj__stats__.text_len"
+      min_range: 0
+      max_range: 20000
+      interval: 1000
+      num_sample: 80000
