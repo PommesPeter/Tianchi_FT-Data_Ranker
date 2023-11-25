@@ -7,7 +7,7 @@ class WordNumBalancedSelector(Selector):
     field."""
 
     def __init__(self,
-                 field_keys: str = '__dj__stats__.word_num',
+                 field_keys: str = '__dj__stats__.num_words',
                  min_range: int = 5,
                  max_range: int = 300,
                  interval: int = 20,
