@@ -10,8 +10,8 @@ export TRANSFORMERS_OFFLINE=1
 
 CUDA_VISIBLE_DEVICES=0,1,2,3
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
-DATA_PATH=data/unieval/unieval_from_v4_gt_0.7.jsonl
-EXP_NAME=run_unieval_dialog_gt_0.7
+DATA_PATH=data/unieval/unieval_from_v13_2_gt_0_8.jsonl
+EXP_NAME=run_unieval_dialog_from_v13_2_gt_0_8
 NAME=${EXP_NAME}_en_${NOWTIME}
 # NAME=run_all_sigma_v4_llm_sample_gt_4_2023-11-14-21-34-52
 OUTPUT_DIR=checkpoints/run/${NAME}
