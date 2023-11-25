@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
     seletor = WordNumBalancedSelector(field_keys='__dj__stats__.num_words',
                                       text_key='instruction')
-    data_path = '/home/xiejunlin/workspace/Tianchi_FT-Data_Ranker/checkpoints/ \
+    data_path = '/home/xiejunlin/workspace/Tianchi_FT-Data_Ranker/checkpoints/\
                  run/run_all_3sigma_v11_from_v4_en_2023-11-21-18-55-00/data/en\
                  /datasets_en.jsonl'
 
