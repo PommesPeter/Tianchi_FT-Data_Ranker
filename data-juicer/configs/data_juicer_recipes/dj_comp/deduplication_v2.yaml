@@ -1,0 +1,57 @@
+# global parameters
+project_name: 'Data-Juicer-recipes-alpaca-cot-en'
+dataset_path: '../data/raw_data/raw_data_en.jsonl'  # path to your dataset directory or file
+export_path: ''
+ds_cache_dir: '~/data1/huggingface/datasets'
+
+np: 100  # number of subprocess to process your dataset
+open_tracer: true
+trace_num: 100
+
+# process schedule
+# a list of several process operators with their arguments
+process:
+  - document_deduplicator: # 104636705
+      lowercase: true 
+      ignore_non_character: true
+
+  - error_filter:
+      text_key: 'text'
+      errors: [
+        '<a href', '<A HREF',
+      ]
+  - error_filter:
+      text_key: 'instruction'
+      errors: [
+        'Keep going', 'Continue writing please', 
+        'expand on step', 'Next one please',
+        'More', 'more', 'Continue', 'answers please',
+        'go on', 'next'
+      ]
+  - error_filter:
+      text_key: 'output'
+      errors: [
+        'network error', 'Network error',
+        'There was an error generating a response'
+        ]
+  - words_num_filter:
+      lang: en
+      tokenization: false
+      min_num: 300
+  - flagged_words_filter:
+      lang: en
+      tokenization: false
+      max_ratio: 0.015
+  - perplexity_filter:
+      lang: en
+      max_ppl: 1000
+  - token_num_filter:                                       
+      hf_tokenizer: data/models/falcon-rw-1b
+      max_num: 1024
+  - document_simhash_deduplicator:
+      tokenization: space
+      window_size: 3
+      lowercase: true
+      ignore_pattern: '\p{P}'
+      num_blocks: 9
+      hamming_distance: 7

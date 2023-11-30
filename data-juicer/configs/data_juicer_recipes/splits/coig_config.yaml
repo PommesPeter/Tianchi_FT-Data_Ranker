@@ -1,0 +1,58 @@
+# global parameters
+project_name: 'Data-Juicer-recipes-alpaca-cot-en'
+dataset_path: '../data/raw_data/raw_data_en.jsonl'  # path to your dataset directory or file
+export_path: ''
+ds_cache_dir: '~/data1/huggingface/datasets'
+
+np: 100  # number of subprocess to process your dataset
+open_tracer: true
+trace_num: 100
+
+# process schedule
+# a list of several process operators with their arguments
+process:
+
+  - document_deduplicator: # 104636705
+      lowercase: true 
+      ignore_non_character: true
+
+  - fix_unicode_mapper:              # NOTE: diff
+  - whitespace_normalization_mapper: # NOTE: from v7 diff
+
+  - alphanumeric_filter: # 104636381
+      tokenization: false
+      min_ratio: 0.4             # change from 0.1
+  - character_repetition_filter: # 104630030
+      rep_len: 10
+      max_ratio: 0.6
+  - flagged_words_filter: # 104576967
+      lang: en
+      tokenization: false
+      max_ratio: 0.015        
+  - maximum_line_length_filter: # 104575811
+      min_len: 20
+      max_len: 20000
+  - text_length_filter: # 104573711
+      min_len: 30
+  - perplexity_filter:             
+      lang: en                     
+      max_ppl: 500                 
+  - token_num_filter:                               
+      hf_tokenizer: data/models/falcon-rw-1b        
+      max_num: 1024                                 
+
+  - document_simhash_deduplicator:  # 72855345
+      tokenization: space
+      window_size: 3
+      lowercase: true
+      ignore_pattern: '\p{P}'
+      num_blocks: 9
+      hamming_distance: 7
+
+  - text_len_selector:          # NOTE: from v7 diff
+      text_key: "text"
+      field_keys: "__dj__stats__.text_len"
+      min_range: 0
+      max_range: 7000
+      interval: 100
+      num_sample: 20000

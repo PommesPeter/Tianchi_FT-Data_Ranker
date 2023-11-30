@@ -139,6 +139,9 @@ process:
   - token_num_filter:                                       
       hf_tokenizer: data/models/falcon-rw-1b
       max_num: 1024
+  - specified_field_words_num_filter:
+      text_key: 'instruction'
+      min_num: 6
   - document_simhash_deduplicator:
       tokenization: space
       window_size: 3
@@ -150,7 +153,7 @@ process:
   - text_len_selector:          # NOTE: from v7 diff
       text_key: "text"
       field_keys: "__dj__stats__.text_len"
-      min_range: 0
-      max_range: 20000
-      interval: 1000
+      min_range: 6
+      max_range: 300
+      interval: 20
       num_sample: 80000
