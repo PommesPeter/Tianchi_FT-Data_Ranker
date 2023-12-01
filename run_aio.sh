@@ -8,7 +8,7 @@ export all_proxy=socks5://uestc.sylin.host:7890
 export HF_DATASETS_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1
 
-CUDA_VISIBLE_DEVICES=4,5,6,7
+CUDA_VISIBLE_DEVICES=0,1,2,3
 NOWTIME=$(date "+%Y-%m-%d-%H-%M-%S")
 CFG_NAME=all_3sigma_v4_mapper_v3_20231128155600
 EXP_NAME=run_dataset_splits
@@ -34,7 +34,7 @@ echo "[Shell] Running get_train_dataset_1b.py to sample data"
 python lm-training/get_train_dataset_1b.py \
     --token_nums 3000000 \
     --ratio 1.0 \
-    --en_data_dir data/dataset_splits_v2.jsonl \
+    --en_data_dir data/dataset_splits_v4.jsonl \
     --output_files ${OUTPUT_DATA_PATH}
     # --zh_data_dir ${OUTPUT_DIR}/data/zh/datasets_zh.jsonl \
     # --en_data_dir ${OUTPUT_DIR}/data/en/datasets_en.jsonl \

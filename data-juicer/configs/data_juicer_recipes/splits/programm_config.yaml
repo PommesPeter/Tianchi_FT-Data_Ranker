@@ -1,0 +1,35 @@
+# global parameters
+project_name: 'Data-Juicer-recipes-alpaca-cot-en'
+dataset_path: '../data/raw_data/raw_data_en.jsonl'  # path to your dataset directory or file
+export_path: ''
+ds_cache_dir: '~/data1/huggingface/datasets'
+
+np: 100  # number of subprocess to process your dataset
+open_tracer: true
+trace_num: 100
+
+# process schedule
+# a list of several process operators with their arguments
+process:
+
+  - fix_unicode_mapper:              # NOTE: diff
+  - whitespace_normalization_mapper: # NOTE: from v7 diff
+
+  - alphanumeric_filter: # 104636381
+      tokenization: false
+      min_ratio: 0.67
+  - character_repetition_filter: # 104630030
+      rep_len: 10
+      max_ratio: 0.15
+  - language_id_score_filter:
+      lang: en
+      min_score: 0.7
+  - word_repetition_filter:
+      lang: en
+      tokenization: false
+      rep_len: 10
+      min_ratio: 0.0
+      max_ratio: 0.15
+  - special_characters_filter:
+      min_ratio: 0.0
+      max_ratio: 0.35
