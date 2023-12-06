@@ -90,7 +90,7 @@ checkpoints/run_all_3sigma_v4_en_2023-11-11-17-37-38
 
 通过分析数据集，发现数据集中存在大量重复且很多格式方面的错误，并且参考 Alpaca-CoT 数据集，我们采用 `data-juicer/configs/data_juicer_recipes/alpaca_cot/alpaca-cot-en-refine.yaml` 作为我们的 baseline，得到初步的结果。
 
-随后继续观察数据集，发现大部分多语种文本都是由 `sharegpt` 这个数据集带来，所以我们认为多语种混合的数据可能会对模型产生影响，我们设计了 `keyword_mapper`，从数据集中筛选出无意义多语种样本的关键词并替换成空格。此外，通过观察数据集还发现存在由于网页爬虫网络错误导致的样本质量过低，故设计 `error_filter` 将含有该关键词的样本过滤掉。同时加入，clean_links_mapper, fix_unicode_mapper, whitespace_normali, punctuation_normalization_mapper 提高后续计算 language_id_score 的准确性。
+随后继续观察数据集，发现大部分多语种文本都是由 `sharegpt` 这个数据集带来，所以我们认为多语种混合的数据可能会对模型产生影响，我们设计了 `keyword_mapper`，从数据集中筛选出无意义多语种样本的关键词并替换成空格。此外，通过观察数据集还发现存在由于网页爬虫网络错误导致的样本质量过低，故设计 `error_filter` 将含有该关键词的样本过滤掉。同时加入，`clean_links_mapper, fix_unicode_mapper, whitespace_normalization_mapper, punctuation_normalization_mapper` 提高后续计算 language_id_score 的准确性。
 
 再者，通过使用 data-juicer 分析各类指标的分布，以及结合实际样本分析，发现对 `text` 字段的 word_num 在小于 300 的样本质量都很差，估在 baseline 添加 `words_num_filter` 设定 `min_num` 最小要有 300 个单词。此外，我们认为 `output` 字段应该要有至少 10 个文本长度才算有意义，故设计了 `output_text_length_filter`；通过对 perplexity 这个概念的理解，我们认为对于语言模型应该需要困惑度比较低的样本才能有利于模型的学习，故调整了 `perplexity_filter` 的 `max_ppl` 为 1000。
 
