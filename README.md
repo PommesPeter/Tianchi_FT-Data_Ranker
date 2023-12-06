@@ -1,6 +1,6 @@
 # Tianchi_FT-Data_Ranker
 
-本仓库为 [FT-Data Ranker：大语言模型微调数据竞赛 -- 1B模型赛道](https://tianchi.aliyun.com/competition/entrance/532157) 比赛的第二名方案。
+本仓库为 [FT-Data Ranker：大语言模型微调数据竞赛 -- 7B模型赛道]([https://tianchi.aliyun.com/competition/entrance/532157](https://tianchi.aliyun.com/competition/entrance/532158)) 比赛的第二名方案。
 
 ## 运行步骤
 
